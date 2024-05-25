@@ -1,9 +1,7 @@
 {
-	"folders": [
-		{
-			"name": "desmos.ai-1",
-			"path": ".."
-		}
-	],
-	"settings": {}
+    "folders": [
+        {
+            "path": ".."
+        }
+    ]
 }
