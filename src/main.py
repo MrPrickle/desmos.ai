@@ -1,11 +1,11 @@
 from openai import OpenAI
 client = OpenAI()
 
-response = ""
+response = "gyatt recoil"
 
 response = client.images.generate(
   model = "dall-e-3",
-  prompt = "gyatt recoil",
+  prompt = response,
   size = "1024x1024",
   quality = "standard",
   n = 1,
