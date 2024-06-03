@@ -1,17 +1,26 @@
-from diffusers import DiffusionPipeline
+from openai import OpenAI
 
-from diffusers import StableDiffusionPipeline, EulerDiscreteScheduler
+key = "sk-proj-B7WyHw3I6icB1xQQOFo0T3BlbkFJtOhXU9WjkHHXasOnkh6h"
+client = OpenAI(api_key = key)
 
-from PIL import Image
+response = client.images.generate(
+    model = "dall-e-3",
+    prompt = "A cute baby seal",
+    size = "1024x1024",
+    quality = "standard",
+    n = 1,
+)
 
-import torch
+image_url = response.data[0].url
 
-model_id = "stabilityai/stable-diffusion-xl-base-1.0"
-scheduler = EulerDiscreteScheduler.from_pretrained(model_id, subfolder="scheduler")
-pipe = StableDiffusionPipeline.from_pretrained(model_id, scheduler=scheduler, torch_dtype=torch.float16)
-pipe = pipe.to("cuda")
+print(image_url)
 
-prompt = "a photo of an astronaut riding a horse on mars"
-image = pipe(prompt).images[0]
 
-image.save("generated_image.png")
+
+
+# Old OpenAI (DOESN"T WORK!)
+# openai.Image.create(
+#     prompt = "A cute baby seal",
+#     n = 2,
+#     size = "1024x1024"
+# )
