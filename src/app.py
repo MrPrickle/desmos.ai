@@ -28,5 +28,7 @@ decor.mainUI()
 # Image outline
 
 
-# To desmos
+# To Desmos
 
+
+# Send Equations

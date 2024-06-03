@@ -4,9 +4,10 @@
         |                                                                                                          |
         |   1. Find a free AI model that generates images -------------------------------------------- | Done      |
         |   2. Learn the API and implement it in a python file --------------------------------------- | Done      |
-        |   3. Build the decoration that will print in the terminal when you run this python script -- |           |
-        |   4. Add any finishing touches, idk -------------------------------------------------------- |           |
-        |   5. Make the video presenting my new python script----------------------------------------- |           |
+        |   3. Build the decoration that will print in the terminal when you run this python script -- | Done      |
+        |   4. Integrate the Desmos Equations from the Image                                           |           |
+        |   5. Add any finishing touches, idk -------------------------------------------------------- |           |
+        |   6. Make the video presenting my new python script----------------------------------------- |           |
         |                                                                                                          |
         |                                                                                                          |
           ========================================================================================================
