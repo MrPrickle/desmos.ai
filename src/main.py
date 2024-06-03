@@ -1,19 +1,28 @@
 from openai import OpenAI
 
 key = "sk-proj-B7WyHw3I6icB1xQQOFo0T3BlbkFJtOhXU9WjkHHXasOnkh6h"
-client = OpenAI(api_key = key)
 
-response = client.images.generate(
-    model = "dall-e-3",
-    prompt = "A cute baby seal",
-    size = "1024x1024",
-    quality = "standard",
-    n = 1,
-)
+def mainAI():
+    client = OpenAI(api_key = key)
 
-image_url = response.data[0].url
+    response = client.images.generate(
+        model = "dall-e-3",
+        prompt = "A cute baby seal",
+        size = "1024x1024",
+        quality = "standard",
+        n = 1,
+    )
 
-print(image_url)
+    image_url = response.data[0].url
+
+    print(image_url)
+
+
+
+
+
+
+
 
 
 

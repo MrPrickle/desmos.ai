@@ -1,4 +1,4 @@
-def main():
+def mainUI():
     print("Welcome to Desmos.ai")
 
 if __name__ == "__main__":
