@@ -31,9 +31,9 @@ USE_L2_GRADIENT = False # Creates less edges but is still accurate (leads to fas
 # USE_L2_GRADIENT = False # Creates less edges but is still accurate (leads to faster renders)
 # SHOW_GRID = True # Show the grid in the background while rendering #
 
-frame = multiprocessing.Value('i', 0)
-height = multiprocessing.Value('i', 0, lock = False)
-width = multiprocessing.Value('i', 0, lock = False)
+# frame = multiprocessing.Value('i', 0)
+# height = multiprocessing.Value('i', 0, lock = False)
+# width = multiprocessing.Value('i', 0, lock = False)
 # frame_latex = 0 #
 
 
