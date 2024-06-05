@@ -35,29 +35,7 @@ USE_L2_GRADIENT = False # Creates less edges but is still accurate (leads to fas
 # frame = multiprocessing.Value('i', 0)
 # height = multiprocessing.Value('i', 0, lock = False)
 # width = multiprocessing.Value('i', 0, lock = False)
-# frame_latex = 0 #
-
-
-# def get_contours(filename, nudge=.33):
-#     image = cv2.imread(filename)
-
-#     if image is None:
-#         raise ValueError(f"Image at {filename} could not be read")
-
-#     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
-#     # Apply Gaussian blur to the grayscale image
-#     blurred = cv2.GaussianBlur(gray, (5, 5), 0)
-
-#     # Perform Canny edge detection
-#     edged = cv2.Canny(blurred, 30, 200)
-
-#     # Find contours in the edge-detected image
-#     contours, _ = cv2.findContours(edged, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-
-#     return contours
-
-
+# frame_latex = 0
 def get_contours(filename, nudge=.33):
     image = cv2.imread(filename)
 
@@ -66,38 +44,18 @@ def get_contours(filename, nudge=.33):
 
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-    # Apply Gaussian blur to enhance contour detection
-    blurred = cv2.GaussianBlur(gray, (5, 5), 0)
+    if BILATERAL_FILTER:
+        median = max(10, min(245, np.median(gray)))
+        lower = int(max(0, (1 - nudge) * median))
+        upper = int(min(255, (1 + nudge) * median))
+        filtered = cv2.bilateralFilter(gray, 5, 50, 50)
+        edged = cv2.Canny(filtered, lower, upper, L2gradient=USE_L2_GRADIENT)
+    else:
+        edged = cv2.Canny(gray, 30, 200)
 
-    # Perform Canny edge detection
-    edged = cv2.Canny(blurred, 30, 200)
-
-    # Find contours in the edge-detected image
-    contours, _ = cv2.findContours(edged, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    contours, _ = cv2.findContours(edged, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
 
     return contours
-
-
-# def get_contours(filename, nudge=.33):
-#     image = cv2.imread(filename)
-
-#     if image is None:
-#         raise ValueError(f"Image at {filename} could not be read")
-
-#     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
-#     if BILATERAL_FILTER:
-#         median = max(10, min(245, np.median(gray)))
-#         lower = int(max(0, (1 - nudge) * median))
-#         upper = int(min(255, (1 + nudge) * median))
-#         filtered = cv2.bilateralFilter(gray, 5, 50, 50)
-#         edged = cv2.Canny(filtered, lower, upper, L2gradient=USE_L2_GRADIENT)
-#     else:
-#         edged = cv2.Canny(gray, 30, 200)
-
-# #     contours, _ = cv2.findContours(edged, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-
-# #     return contours
 
     # REMOVED MULTIPROCESSING PART#
     # with frame.get_lock():
@@ -130,30 +88,26 @@ def get_trace(data):
 def get_latex(filename):
     latex = []
     path = get_trace(get_contours(filename))
-    height = 500  # Assuming image height is 500, adjust if necessary
 
     for curve in path:
         segments = curve.segments
-        start = (curve.start_point.x, height - curve.start_point.y)  # Flip y-coordinate
+        start = (curve.start_point.x, curve.start_point.y)
         for segment in segments:
+            x0, y0 = start
             if segment.is_corner:
-                control = (segment.c.x, height - segment.c.y)  # Flip y-coordinate
-                end = (segment.end_point.x, height - segment.end_point.y)  # Flip y-coordinate
-                # Construct LaTeX expression for a straight line segment
-                latex.append(f"((1-t)*({start[0]})+t*({control[0]}),(1-t)*({start[1]})+t*({control[1]}))")
-                latex.append(f"((1-t)*({control[0]})+t*({end[0]}),(1-t)*({control[1]})+t*({end[1]}))")
+                x1, y1 = segment.c.x, segment.c.y
+                x2, y2 = segment.end_point.x, segment.end_point.y
+                latex.append('((1-t)%f+t%f,(1-t)%f+t%f)' % (x0, x1, y0, y1))
+                latex.append('((1-t)%f+t%f,(1-t)%f+t%f)' % (x1, x2, y1, y2))
             else:
-                control1 = (segment.c1.x, height - segment.c1.y)  # Flip y-coordinate
-                control2 = (segment.c2.x, height - segment.c2.y)  # Flip y-coordinate
-                end = (segment.end_point.x, height - segment.end_point.y)  # Flip y-coordinate
-                # Construct LaTeX expression for a Bezier curve segment
-                latex.append(f"((1-t)*((1-t)*({start[0]})+t*({control1[0]}))+t*((1-t)*({control1[0]})+t*({control2[0]})),\
-                            (1-t)*((1-t)*({start[1]})+t*({control1[1]}))+t*((1-t)*({control1[1]})+t*({control2[1]})))")
-                latex.append(f"((1-t)*((1-t)*({control1[0]})+t*({control2[0]}))+t*((1-t)*({control2[0]})+t*({end[0]})),\
-                            (1-t)*((1-t)*({control1[1]})+t*({control2[1]}))+t*((1-t)*({control2[1]})+t*({end[1]})))")
-            start = end  # Update start point for the next segment
+                x1, y1 = segment.c1.x, segment.c1.y
+                x2, y2 = segment.c2.x, segment.c2.y
+                x3, y3 = segment.end_point.x, segment.end_point.y
+                latex.append('((1-t)((1-t)((1-t)%f+t%f)+t((1-t)%f+t%f))+t((1-t)((1-t)%f+t%f)+t((1-t)%f+t%f)),\
+                (1-t)((1-t)((1-t)%f+t%f)+t((1-t)%f+t%f))+t((1-t)((1-t)%f+t%f)+t((1-t)%f+t%f)))' % \
+                (x0, x1, x1, x2, x1, x2, x2, x3, y0, y1, y1, y2, y1, y2, y2, y3))
+            start = (segment.end_point.x, segment.end_point.y)
     return latex
-
 
 
 # def get_expressions(filename):
