@@ -37,6 +37,8 @@ USE_L2_GRADIENT = False # Creates less edges but is still accurate (leads to fas
 # frame_latex = 0 #
 
 
+
+
 def get_contours(filename, nudge = .33):
     image = cv2.imread(filename)
 

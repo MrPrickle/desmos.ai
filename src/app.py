@@ -12,23 +12,30 @@ sys.path.insert(0, scripts_dir)
 # sys.path.insert(0, 'C:/Users/Riche/OneDrive/Desktop/Documents/.github/desmos.ai/src/decor.py')  # Add the script's directory to the Python path
 # sys.path.insert(1, 'C:/Users/Riche/OneDrive/Desktop/Documents/.github/desmos.ai/src/main.py')  # Add the script's directory to the Python path
 
-import decor
-import main
+from src import decor
+from src import main
+from src import desmos
 
-# Decoration
+
+# Text to Image -------------------------------------------
+
+# Call main.py function to get the image URL
+image_url = main.generate_image_url()
+
+# Call get_expressions with the image URL
+expressions = desmos.get_expressions(image_url)
+
+# Call the mainUI function from the decor module ----------
 decor.mainUI()
 
 
-# Text to Image
+# Image to Black and White --------------------------------
 
 
-# Image to Black and White
+# Image outline -------------------------------------------
 
 
-# Image outline
-
-
-# To Desmos
+# To Desmos -----------------------------------------------
 
 
 # Send Equations
