@@ -118,6 +118,7 @@ def get_latex(filename):
 #         exprs.append({'latex': expr})
 #     return exprs
 
+
 def get_expressions(filename):
     latex = []
     for expr in get_latex(filename):
@@ -125,14 +126,14 @@ def get_expressions(filename):
     return latex
 
 
-def write_to_txt(expressions, filename):
-    with open(filename, 'w') as file:
-        for expr in expressions:
-            file.write(expr + '\n')
+# def write_to_txt(expressions, filename):
+#     with open(filename, 'w') as file:
+#         for expr in expressions:
+#             file.write(expr + '\n')
 
-def get_final_latex(filename, output_file):
-    latex = get_expressions(filename)
-    write_to_txt(latex, output_file)
+# def get_final_latex(filename, output_file):
+#     latex = get_expressions(filename)
+#     write_to_txt(latex, output_file)
 
 
 
@@ -153,8 +154,8 @@ def get_final_latex(filename, output_file):
 # temp_img_dir = os.path.join(current_dir, 'images')
 
 
-test_img_path =  "C:\\Users\\Willi\\OneDrive\\Documents\\GitHub\\desmos.ai-1\\src\\images\\temp_image.png"
+# test_img_path =  "C:\\Users\\Willi\\OneDrive\\Documents\\GitHub\\desmos.ai-1\\src\\images\\temp_image.png"
 
-print(get_expressions(test_img_path))
+# print(get_expressions(test_img_path))
 
-get_final_latex(test_img_path, "latex.txt")
+# get_final_latex(test_img_path, "latex.txt")
