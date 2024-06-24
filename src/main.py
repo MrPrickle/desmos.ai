@@ -163,6 +163,7 @@ def printContirbute():
     print("")
 
     print("TODO: Add option to save the photo you generated")
+    print("Please checkout our github")
 
     printOptions()
     getUser()
