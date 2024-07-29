@@ -9,5 +9,4 @@ $$$$$$$  |$$$$$$$$\ \$$$$$$  |$$ | \_/ $$ | $$$$$$  |\$$$$$$  |      $$\       $
 
 
 
-MrPrickle 2024
-https://github.com/MrPrickle/desmos.ai
+My AP Computer Science Project for Operation Create.
